@@ -1,26 +1,28 @@
-const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
-const mongoose = require("mongoose");
-const User = mongoose.model("User");
+import passport from 'passport';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import { Strategy as FcbkStrategy } from 'passport-facebook';
+import dotenv from 'dotenv';
+import getUser from '../middlewares/getUserFromResourceServer';
 
-passport.use(
-    new LocalStrategy(
-        {
-            usernameField: "user[email]",
-            passwordField: "user[password]"
-        },
-        function(email, password, done) {
-            User.findOne({ email: email })
-                .then(function(user) {
-                    if (!user || !user.validPassword(password)) {
-                        return done(null, false, {
-                            errors: { "email or password": "is invalid" }
-                        });
-                    }
+dotenv.config();
 
-                    return done(null, user);
-                })
-                .catch(done);
-        }
-    )
-);
+
+passport.serializeUser((user, done) => { done(null, user.id); });
+
+passport.deserializeUser((user, done) => done(null, user));
+
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: process.env.GOOGLE_CALLBACK_URL,
+}, getUser));
+
+passport.use(new FcbkStrategy({
+  clientID: process.env.FCBK_CLIENT_ID,
+  clientSecret: process.env.FCBK_CLIENT_SECRET,
+  profileFields: ['email', 'name', 'gender'],
+  callbackURL: process.env.FCBK_CALLBACK_URL,
+  enableProof: true,
+}, getUser));
+
+export default passport;
