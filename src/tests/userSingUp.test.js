@@ -15,8 +15,8 @@ const userSignUp = () => {
         .send(mockData.user1)
         .end((err, res) => {
           expect(res.statusCode).to.equal(201);
-          done();
         });
+      done();
     });
     it('it should return 201 on successful signup, second user', (done) => {
       chai
@@ -25,8 +25,8 @@ const userSignUp = () => {
         .send(mockData.user10)
         .end((err, res) => {
           expect(res.statusCode).to.equal(201);
-          done();
         });
+      done();
     });
     it('it should return 409 if user exists', (done) => {
       chai
@@ -36,8 +36,8 @@ const userSignUp = () => {
         .end((err, res) => {
           expect(res.statusCode).to.equal(409);
           expect(res.body.error).to.equal(`${mockData.user1.email} have already signed up`);
-          done();
         });
+      done();
     });
     it('it should return 422 for invalid firstName', (done) => {
       chai
@@ -47,8 +47,8 @@ const userSignUp = () => {
         .end((err, res) => {
           expect(res.statusCode).to.equal(422);
           expect(res.body.error).to.equal('firstName should have a minimum of 3 characters, no symbols allowed and no space inbetween');
-          done();
         });
+      done();
     });
     it('it should return 422 for invalid lastName', (done) => {
       chai
@@ -58,8 +58,8 @@ const userSignUp = () => {
         .end((err, res) => {
           expect(res.statusCode).to.equal(422);
           expect(res.body.error).to.equal('lastName should have a minimum of 3 characters, no symbols allowed and no space inbetween');
-          done();
         });
+      done();
     });
     it('it should return 422 for invalid email', (done) => {
       chai
@@ -69,8 +69,8 @@ const userSignUp = () => {
         .end((err, res) => {
           expect(res.statusCode).to.equal(422);
           expect(res.body.error).to.equal(' email must be a valid email');
-          done();
         });
+      done();
     });
     it('it should return 422 for invalid email', (done) => {
       chai
@@ -79,8 +79,8 @@ const userSignUp = () => {
         .send(mockData.invalidPassport)
         .end((err, res) => {
           expect(res.statusCode).to.equal(422);
-          done();
         });
+      done();
     });
   });
 };

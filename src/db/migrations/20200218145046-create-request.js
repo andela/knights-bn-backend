@@ -5,37 +5,40 @@ module.exports = {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: Sequelize.INTEGER,
-      unique: true
+      type: Sequelize.INTEGER
     },
-    userId: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE',
-      references: {
-        model: 'Users',
-        key: 'userId',
-        as: 'userId',
-      },
+    managerId: {
+      type: Sequelize.INTEGER
     },
-    type: {
-      type: Sequelize.STRING
+    requesterId: {
+      type: Sequelize.INTEGER
     },
-    reason: {
+    origin: {
       type: Sequelize.STRING
     },
     destination: {
       type: Sequelize.STRING
     },
-    status: {
+    type: {
       type: Sequelize.STRING
     },
     departureDate: {
-      type: Sequelize.DATE
+      allowNull: false,
+      type: Sequelize.DATEONLY
     },
     returnDate: {
-      type: Sequelize.DATE
+      allowNull: false,
+      type: Sequelize.DATEONLY
+    },
+    reason: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
+    status: {
+      allowNull: false,
+      type: Sequelize.ENUM,
+      defaultValue: 'pending',
+      values: ['pending', 'approved', 'rejected'],
     },
     createdAt: {
       allowNull: false,

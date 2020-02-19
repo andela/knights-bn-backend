@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --exec babel-node src/index.js",
-    "test": "NODE_ENV=test npm run dropTables && NODE_ENV=test sequelize db:seed:all && NODE_ENV=test mocha --require @babel/polyfill --require @babel/register ./src/tests/*",
-    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "test": "NODE_ENV=test npm run dropTables && NODE_ENV=test node_modules/.bin/sequelize db:seed:all && NODE_ENV=test mocha --require @babel/polyfill --require @babel/register ./src/tests/main.test.js --timeout 10000 --recursive --exit",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "createTables": "npm run dropTables && sequelize db:seed:all",
     "dropTables": "sequelize db:migrate:undo:all && sequelize db:migrate"
   },
@@ -20,6 +20,7 @@
     "@babel/preset-env": "^7.8.4",
     "@babel/register": "^7.8.3",
     "@hapi/joi": "^17.1.0",
+    "@hapi/joi-date": "^2.0.1",
     "@sendgrid/mail": "^6.5.2",
     "bcrypt": "^3.0.8",
     "bcrypt-nodejs": "0.0.3",

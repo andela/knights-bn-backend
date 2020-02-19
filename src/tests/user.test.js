@@ -141,8 +141,8 @@ const userSignUp = () => {
         .send(mockData.email)
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
-          done();
         });
+      done();
     });
     it('it should return 404 when the user does not exist in the system', (done) => {
       chai
@@ -151,8 +151,8 @@ const userSignUp = () => {
         .send({ email: 'codenightt@gmail.com' })
         .end((err, res) => {
           expect(res.statusCode).to.equal(404);
-          done();
         });
+      done();
     });
     it('it should return 401 for the invalid token', (done) => {
       chai
@@ -161,8 +161,8 @@ const userSignUp = () => {
         .send(mockData.newPassword)
         .end((err, res) => {
           expect(res.statusCode).to.equal(401);
-          done();
         });
+      done();
     });
     it('it should return 202 when password is successfully ', (done) => {
       const { token } = mockData.token;
@@ -172,8 +172,8 @@ const userSignUp = () => {
         .send(mockData.newPassword)
         .end((err, res) => {
           expect(res.statusCode).to.equal(202);
-          done();
         });
+      done();
     });
   });
 };

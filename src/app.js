@@ -20,7 +20,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
 
 app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use('/api/v1', users);
-app.use('/api/v1', trips);
+app.use('/api/v1', [users, trips]);
 
 export default app;

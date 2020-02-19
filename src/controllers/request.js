@@ -6,10 +6,10 @@ environment.config();
 
 export default class usersController {
 
-  static async findAllMyRequest(req, res) {
+  static async findAllMyRequest(req, res) {    
     try{                
     const allMyRequest = await models.Request.findAll({
-        where: { userId: `${req.user.userId}` },
+        where: { requesterId: `${req.body.userId}` },
       }); 
     if(allMyRequest.length !== 0){
       return res.status(200).json({ message: 'List of requests', allMyRequest });

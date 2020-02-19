@@ -15,8 +15,8 @@ const usersignIn = () => {
         .send(mockData.user1)
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
-          done();
         });
+      done();
     });
     it('it should return 404 if email is not registered', (done) => {
       chai
@@ -25,8 +25,8 @@ const usersignIn = () => {
         .send(mockData.youhaveNoAccount)
         .end((err, res) => {
           expect(res.statusCode).to.equal(404);
-          done();
         });
+      done();
     });
     it('it should return 401 for invalid password', (done) => {
       chai
@@ -35,8 +35,8 @@ const usersignIn = () => {
         .send(mockData.invalidCredentials)
         .end((err, res) => {
           expect(res.statusCode).to.equal(401);
-          done();
         });
+      done();
     });
     it('it should return 401 if no password provided', (done) => {
       chai
@@ -45,8 +45,8 @@ const usersignIn = () => {
         .send(mockData.missingIinformation)
         .end((err, res) => {
           expect(res.statusCode).to.equal(401);
-          done();
         });
+      done();
     });
   });
   describe('User Logout', () => {
@@ -58,8 +58,8 @@ const usersignIn = () => {
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
           expect(res.body.message).to.equal('Logout successfully');
-          done();
         });
+      done();
     });
     it('it should return 401 on trying to logout when you are not logged in', (done) => {
       chai
@@ -69,8 +69,8 @@ const usersignIn = () => {
         .end((err, res) => {
           expect(res.statusCode).to.equal(401);
           expect(res.body.error).to.equal('you are not logged in');
-          done();
         });
+      done();
     });
     it('it should return 200 on successful signIn', (done) => {
       chai
@@ -80,8 +80,8 @@ const usersignIn = () => {
         .end((err, res) => {
           expect(res.statusCode).to.equal(200);
           expect(res.body.message).to.equal('Successfully login');
-          done();
         });
+      done();
     });
   });
 };
