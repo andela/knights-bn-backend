@@ -7,7 +7,7 @@ import imageMiddleware from '../middlewares/imageUpload';
 import rateAccommodation from '../controllers/rate.accommodation';
 import validateParams from '../middlewares/validateParamsRate';
 import validateRate from '../middlewares/validateRate';
-
+import findOne from '../middlewares/findAccommodation';
 /**
  * @swagger
  *  "/create/accommodation": {
@@ -52,7 +52,7 @@ import validateRate from '../middlewares/validateRate';
         ],
         "operationId": "accommodation-image",
         "produces": [
-          "application/json"
+          "application/x-www-form-urlencoded"
         ],
         "consumes": [
           "application/x-www-form-urlencoded"
@@ -71,7 +71,6 @@ import validateRate from '../middlewares/validateRate';
             "required": true,
             "type": "file",
           },
-
         ],
         "responses": {
           "200": {
@@ -102,7 +101,6 @@ import validateRate from '../middlewares/validateRate';
           "application/json"
         ],
         "parameters": [
-
         ],
         "responses": {
           "200": {
@@ -246,8 +244,8 @@ import validateRate from '../middlewares/validateRate';
  */
 
 const accommodationRouter = Router();
-accommodationRouter.patch('/upload/accommodation/:id', verifyToken.auth, isAdmin, imageMiddleware.single('imageOfBuilding'), accommodation.uploadBuildingImage);
-accommodationRouter.patch('/edit/accommodation/:id', verifyToken.auth, isAdmin, accommodation.editAccommodation);
+accommodationRouter.patch('/upload/accommodation/:id', verifyToken.auth, isAdmin, imageMiddleware.single('imageOfBuilding'), findOne, accommodation.uploadBuildingImage);
+accommodationRouter.patch('/edit/accommodation/:id', verifyToken.auth, isAdmin, findOne, accommodation.editAccommodation);
 accommodationRouter.post('/create/accommodation', verifyToken.auth, imageMiddleware.single('imageOfBuilding'), isAdmin, accommodationValidataion, validateRooms, isExist, accommodation.createAccomodation);
 accommodationRouter.get('/view/accommodation/:id', verifyToken.auth, accommodation.getSingleAccommodation);
 accommodationRouter.get('/view/accommodations', verifyToken.auth, accommodation.getAllAccommodations);

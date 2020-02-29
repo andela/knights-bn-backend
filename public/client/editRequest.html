@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <style>
+    form{
+      background-color: bisque;
+      margin-left: 30%;
+      width: 60%;
+      position: absolute;
+    }
+   input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+input[type=submit] {
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  font-size: 12pt;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+a{
+  color: red;
+  text-decoration: underline;
+}
+#new{
+  font-size: 16pt;
+  background-color: darkorchid;
+  color: white;
+
+}
+
+#response{
+  background-color:darkslateblue;
+  font-size: 16pt;
+  margin-top: 10%;
+  margin-right: 81%;
+  color: white;
+  position:absolute;
+}
+    </style>
+
+    </head>
+    
+    <body>
+      <ul id="notification"></ul>
+      <div id="response">
+      </div>
+        <form>
+          <label for="origin">ID of the trip request:</label><br>
+          <input type="text" id="requestid" name="requestid" value=""><br>
+          <label for="origin">origin:</label><br>
+          <input type="text" id="origin" name="origin" value=""><br>
+          <label for="destination">destination:</label><br>
+          <input type="text" id="destination" name="destination" value=""><br>
+          <label for="departureDate">departureDate:</label><br>
+          <input type="text" id="departureDate" name="departureDate" value=""><br>
+          <label for="fname">returnDate:</label><br>
+          <input type="text" id="returnDate" name="returnDate" value=""><br>
+          <label for="accommodation">accommodation:</label><br>
+          <input type="text" id="accommodation" name="accommodation" value=""><br>
+          <label for="reason">reason:</label><br>
+          <input type="text" id="reason" name="reason" value=""><br><br>
+          <button type="submit"> Submit</button>
+        </form>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.0/socket.io.js"></script>
+        <script src="./notification.js"></script>
+        <script src="./getAllRequest.js"></script>
+      <script src="./main.js"></script>
+      <script src="./editEvent.js"></script>
+    </body>
+</html>
