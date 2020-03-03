@@ -1,11 +1,17 @@
+import Sequelize from 'sequelize';
 import environment from 'dotenv';
 import models from '../db/models';
 import getTodayDate from '../utils/getTodayDate';
 import isObjectEmpty from '../utils/isObjectEmpty';
+import updateRequest from '../utils/updateRequest';
+
+const {
+  Op, where, cast, col
+} = Sequelize;
 
 environment.config();
 
-export default class usersController {
+export default class requestController {
 
   static async createTwoWayTrip(req,res) {
     try{        
@@ -37,7 +43,7 @@ export default class usersController {
         reason}).then((request) => request);
         
         if(request.length != 0){
-          return res.status(200).json({
+          return res.status(201).json({
             message: 'request created on success!',
             origin,
             destination,
@@ -204,5 +210,43 @@ export default class usersController {
     return res.status(500).json({status:500, error});
    }
   }
+  static async editRequest (req, res) {
+    try{
+
+      const { requestId } = req.query;
+      const requesterId = req.user.id;
+
+      const isRequestEmpty = isObjectEmpty(req.body);
+
+      if(isRequestEmpty === true) return res.status(200).json({
+        message: 'Empty request body.'
+      })
+  
+      const request = await models.Request.findOne({
+        where : { id : requestId, requesterId }
+      })      
+      if(request){
+        if(request.status === 'pending'){
+          const updatedRequest = await updateRequest(requestId,req.body);          
+          if(updatedRequest) return res.status(200).json({
+            message: 'successfully updated',
+            updatedRequest })
+        } 
+        else return res.status(200).json({
+            error: 'Sorry, the request was closed!'
+          })
+      } else {
+        return res.status(404).json({
+          error: 'request not found!'
+        })
+      }
+    } catch (error) {
+       res.status(500).json({
+        error
+      })
+    }
+  }
   
 }
+
+

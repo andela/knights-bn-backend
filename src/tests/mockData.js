@@ -231,6 +231,13 @@ const mockData = {
         to: '2020-8-31'
       }
     ]
+  },
+  editRequest: {
+    origin: 'Nyamata',
+    destination: 'Huye',
+    departureDate: '2020-02-29',
+    returnDate: '2020-03-29',
+    reason: 'Test update feature.'
   }
 };
 export default mockData;

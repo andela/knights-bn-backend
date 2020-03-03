@@ -5,7 +5,6 @@ import getTodayDate from '../utils/getTodayDate';
 
 export default async (req, res, next) => {
 try{
-    
   const {
     id, origin, destination, departureDate, returnDate, reason, accommodation
   } = req.body;

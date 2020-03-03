@@ -3,6 +3,7 @@ import chaiHttp from 'chai-http';
 import dotenv from 'dotenv';
 import app from '../app';
 import mockData from './mockData';
+import isObjectEmpty from '../utils/isObjectEmpty';
 
 dotenv.config();
 
@@ -85,6 +86,12 @@ const testRejectRequest = () => {
           expect(response.body).to.have.property('message').equals("Sorry can't reject ! The user is now on trip.");
           done();
         });
+    });
+    it('should return true if object is empty', (done) => {
+      const userInfo = {};
+      const isUserInfoEmpty = isObjectEmpty(userInfo);
+      expect(isUserInfoEmpty).to.equal(true);
+      done();
     });
   });
 };
