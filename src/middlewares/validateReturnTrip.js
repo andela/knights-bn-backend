@@ -1,7 +1,7 @@
 import JoiBase from '@hapi/joi';
 import JoiDate from '@hapi/joi-date';
 import models from '../db/models';
-import getTodayDate from '../utils/getTodayDate';
+import getTodayDate from '../helpers/getTodayDate';
 
 export default async (req, res, next) => {
 try{

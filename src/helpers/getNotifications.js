@@ -7,7 +7,7 @@ const {
 
 class notificationsHelper{
 
-  static async searchNotification(role,type,  id){
+  static async searchNotification(role,type,id){
     const getNotification = await models.Notification.findAll({
       where: {
         [Op.and]: [

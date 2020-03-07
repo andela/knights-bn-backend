@@ -4,8 +4,8 @@ import localStorage from 'localStorage';
 import environment from 'dotenv';
 import sgMail from '@sendgrid/mail';
 import models from '../db/models';
-import generateToken from '../utils/generateToken';
-import generatePswd from '../utils/randomPswd';
+import generateToken from '../helpers/generateToken';
+import generatePswd from '../helpers/randomPswd';
 import usePasswordHashToMakeToken from '../helpers/helpers';
 import {
   getPasswordResetURL,

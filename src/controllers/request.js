@@ -1,11 +1,12 @@
 import environment from 'dotenv';
 import sgMail from '@sendgrid/mail';
-import models from '../db/models';
-import getTodayDate from '../utils/getTodayDate';
-import isObjectEmpty from '../utils/isObjectEmpty';
+import models, { sequelize } from '../db/models';
+import getTodayDate from '../helpers/getTodayDate';
+import isObjectEmpty from '../helpers/isObjectEmpty';
 import oneWayTripHelper from '../helpers/oneWayTrip';
 import Sequelize from 'sequelize';
 import { echoNotification } from '../helpers/notificationSender';
+import notifyTheRequester from '../helpers/approvalNotification';
 
 const {
   Op, where, cast, col
@@ -95,14 +96,6 @@ export default class usersController {
 
 
         if(request){
-
-          const IntendedManager = await models.User.findAll({
-            where: { id: `${request.dataValues.managerId}` },
-          }); 
-          const User = await models.User.findAll({
-            where: { id: `${request.dataValues.requesterId}` },
-          }); 
-
           sgMail.setApiKey(process.env.BN_API_KEY);
           const msg = {
             to: `${manager.dataValues.email}`,
@@ -118,7 +111,7 @@ export default class usersController {
             <br>Destination: ${request.dataValues.destination}
             <br>DepartureDate: ${request.dataValues.departureDate}
             <br>ReturnDate: ${request.dataValues.returnDate}
-            <br>Barefoot Nomad Team<br>
+            <br><br>Barefoot Nomad Team<br>
             <br>Thank you<br>
             </p>`,
          }
@@ -308,5 +301,66 @@ export default class usersController {
     return res.status(500).json({status:500, error});
    }
   }
+  static async approveRequest(req, res) {
+    try{
+        const { requestId } = req.params;
+        const managerId = req.user.id;
+             
+        const manager = await models.User.findOne(
+            { where: { id : managerId, role : 'manager'} }
+        ); 
+        if(manager === null) return res.status(403).json({
+          error: 'Unauthorized access!'
+        })     
+        const request = await models.Request.findOne(
+            { where: { id: requestId, managerId } }
+        ); 
+
+        let isRequestEmpty = isObjectEmpty(request)
+        if(isRequestEmpty === true) return res.status(404).json({
+          error: 'Request not found!'
+        })
+        //is today's date <= departure Date OR departure's date < today's date < returnDate
+        const todayDate = new Date(getTodayDate());
+        let departureDate = request.departureDate;
+        let returnDate = request.returnDate;
+        const canApproveRequest = ((todayDate <= departureDate) || ((departureDate < todayDate)&& (todayDate< returnDate)));
+        if(canApproveRequest === false) return res.status(405).json({
+          error: "Can't approve, the request period ended!"
+        })
+
+
+           let requestStatus = request.status;
+          const requester = await models.User.findOne(
+            { where : { id: request.requesterId} }
+          )
+          if (requestStatus === 'approved'){
+            return res.status(200).json({
+                message: 'The request was approved before!',
+                requestId,
+                requestStatus
+              })
+          }
+          else {
+                const updatedRequest = await models.Request.update(
+                    { status: 'approved' },
+                    { where : { id: requestId } }
+                );
+                let isUpdatedRequestEmpty = isObjectEmpty(updatedRequest);
+                if(isUpdatedRequestEmpty === false){
+                  notifyTheRequester('no-reply@brftnomad.com',requester, request)
+                    return res.status(200).json({
+                        message: 'The request successfully approved',
+                        requestId,
+                        requestStatus: updatedRequest[0].status
+                    })
+                }
+          }
+    } catch (error) {
+        res.status(500).json({
+            error: error.message
+            })
+        }
+    }
   
 }
