@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable no-underscore-dangle */
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsDoc from 'swagger-jsdoc';
@@ -17,6 +15,7 @@ import trips from './routes/trips';
 import translator from './translator';
 import accommodationRouter from './routes/accommodation';
 
+
 dotenv.config();
 
 // server
@@ -30,13 +29,15 @@ const io = socketIo(server);
 const connectedClients = {};
 io.use(async (socket, next) => {
   const { token } = socket.handshake.query;
-  const decoded = jwt.verify(token, process.env.SECRETKEY);
-  const userData = decoded;
+  if (token) {
+    const decoded = jwt.verify(token, process.env.SECRETKEY);
+    const userData = decoded;
 
-  if (!userData.error) {
-    const clientKey = Number.parseInt(userData.id, 10);
-    connectedClients[clientKey] = connectedClients[clientKey] || [];
-    connectedClients[clientKey].push(socket.id);
+    if (!userData.error) {
+      const clientKey = Number.parseInt(userData.id, 10);
+      connectedClients[clientKey] = connectedClients[clientKey] || [];
+      connectedClients[clientKey].push(socket.id);
+    }
   }
   next();
 });
@@ -71,8 +72,8 @@ app.use(sessions({
   saveUninitialized: false,
   cookie: {
     maxAge: 14 * 24 * 3600 * 1000,
-    sameSite: true
-  }
+    sameSite: true,
+  },
 }));
 app.use(passport.initialize());
 
@@ -83,8 +84,9 @@ app.use('/api/v1', users);
 app.use('/api/v1', trips);
 app.use('/api/v1', accommodationRouter);
 
+
 app.use((req, res) => {
-  return res.status(404).send({
+  res.status(404).send({
     status: 404,
     error: 'Not Found!',
   });
