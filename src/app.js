@@ -8,11 +8,13 @@ import passport from 'passport';
 import multer from 'multer';
 import cookieParser from 'cookie-parser';
 import sessions from 'express-session';
+import jwt from 'jsonwebtoken';
 import swaggerDefinition from './docs/swaggerDefinition';
 import users from './routes/users';
 import trips from './routes/trips';
 import translator from './translator';
-import jwt from 'jsonwebtoken';
+import accommodationRouter from './routes/accommodation';
+
 
 dotenv.config();
 
@@ -27,19 +29,21 @@ const io = socketIo(server);
 const connectedClients = {};
 io.use(async (socket, next) => {
   const { token } = socket.handshake.query;
-  const decoded = jwt.verify(token, process.env.SECRETKEY); 
-  const userData = decoded;
-  
-  if (!userData.error) {
-    const clientKey = Number.parseInt(userData.id, 10);
-    connectedClients[clientKey] = connectedClients[clientKey] || [];
-    connectedClients[clientKey].push(socket.id);
+  if (token) {
+    const decoded = jwt.verify(token, process.env.SECRETKEY);
+    const userData = decoded;
+
+    if (!userData.error) {
+      const clientKey = Number.parseInt(userData.id, 10);
+      connectedClients[clientKey] = connectedClients[clientKey] || [];
+      connectedClients[clientKey].push(socket.id);
+    }
   }
   next();
 });
 app.use((req, res, next) => {
   req.io = io;
-  
+
   req.connectedClients = connectedClients;
   next();
 });
@@ -68,8 +72,8 @@ app.use(sessions({
   saveUninitialized: false,
   cookie: {
     maxAge: 14 * 24 * 3600 * 1000,
-    sameSite: true
-  }
+    sameSite: true,
+  },
 }));
 app.use(passport.initialize());
 
@@ -78,6 +82,8 @@ app.get('/', (req, res) => res.json(res.__('Welcome to Barefoot Nomad')));
 app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api/v1', users);
 app.use('/api/v1', trips);
+app.use('/api/v1', accommodationRouter);
+
 
 app.use((req, res) => {
   res.status(404).send({
@@ -87,4 +93,3 @@ app.use((req, res) => {
 });
 
 export default app;
-
