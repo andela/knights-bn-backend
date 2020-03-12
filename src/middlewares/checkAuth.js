@@ -18,6 +18,19 @@ const auth = (req, res, next) => {
   }
   return token;
 };
+
+const isSuperAdmin = (req, res, next) => {
+  try {
+    if (req.user.role === 'superAdmin') {
+      next();
+    } else {
+      return res.status(403).json({ messsage: 'Sorry! Only super admin authorized!' });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: 'error' });
+  }
+};
 export default {
   auth,
+  isSuperAdmin,
 };

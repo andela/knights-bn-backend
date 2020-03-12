@@ -5,14 +5,12 @@ import userLoginValidation from '../middlewares/userLoginValidation';
 import userValidation from '../middlewares/newUser';
 import fakeUser from '../mockData/fakeUser';
 import auth from '../middlewares/checkAuth';
-
-
 import userProfile from '../controllers/userProfile';
 import imageMiddleware from '../middlewares/imageUpload';
 
 const router = express.Router();
 const {
-  registerUser, verifyAcccount, resetPassword, forgetPassword, login, socialLogin, logout,
+  registerUser, verifyAcccount, resetPassword, forgetPassword, login, socialLogin, logout, updateUserRole
 } = usersController;
 /**
  * @swagger
@@ -365,6 +363,7 @@ router.post('/auth/login', userLoginValidation, login);
 router.get('/user/profile', auth.auth, userProfile.getProfileInformation);
 router.patch('/edit/user/profile', auth.auth, imageMiddleware.single('profileImage'), userProfile.changeMyProfileInfo);
 router.get('/remembered', auth.auth, userProfile.rememberMe);
+router.patch('/user/userRole/:id', auth.auth, auth.isSuperAdmin, updateUserRole);
 
 
 /**
@@ -487,6 +486,5 @@ router.patch('/password/reset/:id/:token', userValidation.reset, resetPassword);
     }
   */
 router.patch('/auth/logout', auth.auth, logout);
-
 
 export default router;

@@ -1,5 +1,18 @@
 export function up(queryInterface) {
   return queryInterface.bulkInsert('Users', [{
+    firstName: 'Mose',
+    lastName: 'Rwibutso',
+    gender: 'male',
+    email: 'superadmin@barefootnomad.com',
+    passport: 'ws846522',
+    password: '$2b$10$l05Anqm8ZkiTZiJPzDtjouorkUjPkzX1MqKau28V2nRHiiX3qpW2e',
+    role: 'superAdmin',
+    method: 'standard',
+    clientId: null,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
     firstName: 'Alain',
     lastName: 'Maxim',
     gender: 'male',

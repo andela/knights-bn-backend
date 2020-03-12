@@ -377,5 +377,12 @@ const mockData = {
       },
     ],
   },
+  superAdminLogin: {
+    email: 'superadmin@barefootnomad.com',
+    password: 'Niyonkuru@1',
+  },
+  newRole: {
+    role: 'requester',
+  },
 };
 export default mockData;

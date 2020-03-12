@@ -11,6 +11,7 @@ import rememberMe from './rememberMe.test';
 import commentTest from './comment.test';
 import editRequest from './editRequest.test';
 import events from '../helpers/eventConnect';
+import adminSetRoles from './userRole.test';
 
 import uploadEmptyImage from './accommodation/imageUploadAccommodation.test';
 import approveRequest from './approveRequest.test';
@@ -59,3 +60,4 @@ viewSpecificRequest();
 socialLogin();
 routeExistance();
 events();
+adminSetRoles();

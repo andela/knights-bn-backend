@@ -34,5 +34,17 @@ class UserQuery {
       { where: { email } },
     );
   }
+
+  static async getUserById(id) {
+    const foundUser = await models.User.findOne({ where: { id } });
+    return foundUser;
+  }
+
+  static async updateUserRole(role, id) {
+    const userToUpdate = await this.getUserById(id);
+    const { dataValues } = userToUpdate;
+    const updatedUser = await models.User.update({ role }, { where: { id: dataValues.id } });
+    return updatedUser;
+  }
 }
 export default UserQuery;
