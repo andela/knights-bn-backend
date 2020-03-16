@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 const localSwagger = process.env.LOCAL_HOST;
 const herokuSwagger = process.env.HOST_NAME;
-
 const swaggerDefinition = {
   info: {
     title: 'Barefoot Nomad',

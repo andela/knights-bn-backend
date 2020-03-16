@@ -38,7 +38,6 @@ io.use(async (socket, next) => {
 });
 app.use((req, res, next) => {
   req.io = io;
-
   req.connectedClients = connectedClients;
   next();
 });

@@ -377,5 +377,18 @@ const mockData = {
       },
     ],
   },
+  superAdminLogin: {
+    email: 'superadmin@barefootnomad.com',
+    password: 'Niyonkuru@1',
+  },
+  updatableUser: {
+    email: 'brftnomad@gmail.com',
+  },
+  adminToken: {
+    adminRole: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJzdXBlcmFkbWluQGJhcmVmb290bm9tYWQuY29tIiwicm9sZSI6InN1cGVyQWRtaW4iLCJmaXJzdE5hbWUiOiJNb3NlIiwibGFzdE5hbWUiOiJSd2lidXRzbyIsImlhdCI6MTU4NDM4NjQwMX0.eELw_RvIbhDChs6X7fD3SwZ4yZo94PAIQ5jEk4we2P0',
+  },
+  newRole: {
+    role: 'requester',
+  },
 };
 export default mockData;

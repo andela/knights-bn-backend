@@ -10,7 +10,7 @@ import imageMiddleware from '../middlewares/imageUpload';
 
 const router = express.Router();
 const {
-  registerUser, verifyAcccount, resetPassword, forgetPassword, login, socialLogin, logout,
+  registerUser, verifyAcccount, resetPassword, forgetPassword, login, socialLogin, logout, updateUserRole
 } = usersController;
 /**
  * @swagger
@@ -363,6 +363,7 @@ router.post('/auth/login', userLoginValidation, login);
 router.get('/user/profile', auth.auth, userProfile.getProfileInformation);
 router.patch('/edit/user/profile', auth.auth, imageMiddleware.single('profileImage'), userProfile.changeMyProfileInfo);
 router.get('/remembered', auth.auth, userProfile.rememberMe);
+router.patch('/users/setUserRole', auth.auth, updateUserRole);
 
 /**
  * @swagger

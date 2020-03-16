@@ -8,6 +8,7 @@ import models from '../db/models';
 import generateToken from '../helpers/generateToken';
 import generatePswd from '../helpers/randomPswd';
 import usePasswordHashToMakeToken from '../helpers/helpers';
+import userQuery from '../helpers/userQueries';
 import {
   getPasswordResetURL,
   resetPasswordTemplate,
@@ -21,7 +22,7 @@ export default class usersController {
   static async registerUser(req, res) {
     try {
       const {
-        firstName, lastName, gender, passportNumber, email, password, lineManager,
+        firstName, lastName, gender, passportNumber, email, password,
       } = req.body;
 
       const token = generateToken({
@@ -244,6 +245,24 @@ export default class usersController {
       });
     } catch (error) {
       return res.status(401).json({ error: 'invalid token' });
+    }
+  }
+
+  static async updateUserRole(req, res) {
+    const { email } = req.query;
+    const { role } = req.body;
+    try {
+      if (req.user.role !== 'superAdmin') {
+        return res.status(403).json({ message: 'Sorry! Only super admin authorized!' });
+      }
+      const existingUser = await userQuery.getUserByEmail(email);
+      if (!existingUser) {
+        return res.status(404).json({ message: `User  ${email} is not found!` });
+      }
+      await userQuery.updateUserRole(role, email);
+      return res.status(200).json({ message: 'User successfully updated!', existingUser });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
     }
   }
 

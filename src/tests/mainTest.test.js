@@ -11,7 +11,6 @@ import rememberMe from './rememberMe.test';
 import commentTest from './comment.test';
 import editRequest from './editRequest.test';
 import events from '../helpers/eventConnect';
-
 import uploadEmptyImage from './accommodation/imageUploadAccommodation.test';
 import approveRequest from './approveRequest.test';
 import viewSpecificRequest from './viewSpecificRequest.test';
@@ -29,6 +28,7 @@ import {
   violatingDatabase,
   violatingDb,
 } from './accommodation/createAccommodationFacility.test';
+import testUserRoles from './userRoles.test';
 
 signUpTest();
 userLoginTest();
@@ -40,6 +40,7 @@ commentTest();
 rejectRequest();
 rememberMe();
 editRequest();
+testUserRoles();
 accommodationFacility();
 uploadEmptyImage();
 missingRoomInformation();
