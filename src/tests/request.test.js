@@ -60,7 +60,7 @@ const userSignUp = () => {
         .get('/api/v1/trips/myRequest')
         .end((err, res) => {
           expect(res.status).to.equal(200);
-          expect(res.body.message).to.equal('List of requests');
+          expect(res.body.message).to.equal('all my list of requests');
           done();
         });
     });
@@ -102,7 +102,7 @@ const userSignUp = () => {
         .request(app)
         .get('/api/v1/trips/myRequest')
         .end((err, res) => {
-          expect(res.body.message).to.equal('List of requests');
+          expect(res.body.message).to.equal('all my list of requests');
           expect(res.body.allMyRequest).to.be.an('array');
           done();
         });
@@ -260,6 +260,28 @@ const userSignUp = () => {
         .end((err, res) => {
           expect(res.statusCode).to.equal(404);
           expect(res.body.message).to.be.equal('no results found');
+          done();
+        });
+    });
+    it('it should return 200 on successful signIn', (done) => {
+      chai
+        .request(app)
+        .post('/api/v1/auth/login')
+        .send(mockData.managerLogin3)
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          expect(res.body.message).to.be.equal('Successfully login');
+          done();
+        });
+    });
+    it('it should return 200 when Pending Request available', (done) => {
+      chai
+        .request(app)
+        .get('/api/v1/trips/pendingApproval')
+        .send()
+        .end((err, res) => {
+          expect(res.statusCode).to.equal(200);
+          expect(res.body.message).to.be.equal('Pending requests');
           done();
         });
     });

@@ -50,7 +50,7 @@ const testApproveRequest = () => {
         .end((err, res) => {
           requestIdToEdit = res.body.allMyRequest[0].id;
           expect(res.statusCode).to.equal(200);
-          expect(res.body.message).to.equal('List of requests');
+          expect(res.body.message).to.equal('all my list of requests');
 
           done();
         });

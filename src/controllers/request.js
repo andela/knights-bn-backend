@@ -102,7 +102,7 @@ export default class requestsController {
         where: { requesterId: req.user.id },
         include: [{ model: models.Comment, attributes: ['id', 'comment', 'createdAt'] }],
       });
-      if (allMyRequest) { return res.status(200).json({ message: 'List of requests', allMyRequest }); }
+      if (allMyRequest) { return res.status(200).json({ message: 'all my list of requests', allMyRequest }); }
       return res.status(404).json({ message: 'No request found', allMyRequest });
     } catch (error) { return res.status(500).json({ status: 500, error: error.message }); }
   }
@@ -114,7 +114,7 @@ export default class requestsController {
         where: { managerId: req.user.id, status: 'pending' },
         include: [{ model: models.Comment }],
       });
-      if (pendingRequests) { return res.status(200).json({ message: 'Pending requests', pendingRequests }); }
+      if (pendingRequests.length > 0) { return res.status(200).json({ message: 'Pending requests', pendingRequests }); }
       return res.status(404).json({ message: 'No Pending request available' });
     } catch (error) {
       return res.status(500).json({ status: 500, error });

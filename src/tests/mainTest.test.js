@@ -72,6 +72,6 @@ viewSpecificRequest();
 getStats();
 accommodationFeedBack();
 notificationFormat();
-socialLogin();
 routeExistance();
 events();
+socialLogin();
